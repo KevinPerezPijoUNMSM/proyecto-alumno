@@ -8,16 +8,16 @@ use yii\base\Model;
 /**
  * LoginForm is the model behind the login form.
  *
- * @property-read User|null $user
+ * @property-read Alumno|null $alumno
  *
  */
 class LoginForm extends Model
 {
-    public $username;
-    public $password;
+    public $alu_vcnombre;
+    public $alu_vcpassword;
     public $rememberMe = true;
 
-    private $_user = false;
+    private $_alumno = false;
 
 
     /**
@@ -27,11 +27,11 @@ class LoginForm extends Model
     {
         return [
             // username and password are both required
-            [['username', 'password'], 'required'],
+            [['alu_vcnombre', 'alu_vcpassword'], 'required'],
             // rememberMe must be a boolean value
             ['rememberMe', 'boolean'],
             // password is validated by validatePassword()
-            ['password', 'validatePassword'],
+            ['alu_vcpassword', 'validatePassword'],
         ];
     }
 
@@ -45,10 +45,10 @@ class LoginForm extends Model
     public function validatePassword($attribute, $params)
     {
         if (!$this->hasErrors()) {
-            $user = $this->getUser();
+            $alumno = $this->getALumno();
 
-            if (!$user || !$user->validatePassword($this->password)) {
-                $this->addError($attribute, 'Incorrect username or password.');
+            if (!$alumno || !$alumno->validatePassword($this->alu_vcpassword)) {
+                $this->addError($attribute, 'Nombre o Constraseña incorrectos');
             }
         }
     }
@@ -60,22 +60,21 @@ class LoginForm extends Model
     public function login()
     {
         if ($this->validate()) {
-            return Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600*24*30 : 0);
+            return Yii::$app->alumno->login($this->getAlumno(), $this->rememberMe ? 3600*24*30 : 0);
         }
         return false;
     }
 
     /**
-     * Finds user by [[username]]
+     * Finds Alumno by [[alu_vcnombre]]
      *
-     * @return User|null
+     * @return Alumno|null
      */
-    public function getUser()
+    public function getAlumno()
     {
-        if ($this->_user === false) {
-            $this->_user = User::findByUsername($this->username);
+        if ($this->_alumno === false) {
+            $this->_alumno = Alumno::findByUsername($this->alu_vcnombre);
         }
-
-        return $this->_user;
+        return $this->_alumno;
     }
 }

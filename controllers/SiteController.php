@@ -80,7 +80,7 @@ class SiteController extends Controller
             return $this->goBack();
         }
 
-        $model->password = '';
+        $model->alu_vcpassword = '';
         return $this->render('login', [
             'model' => $model,
         ]);
