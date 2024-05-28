@@ -36,9 +36,11 @@ class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
     public static function findIdentity($id)
     {
         $alu = Alumno::findOne(['alu_vccodigo'=>$id]);
+        $partes = explode('@',$alu->alu_vccorreo);
         if(!is_null($alu)){
             $user = new User();
             $user -> id = strtoupper($alu->alu_vccodigo);
+            $user -> username = $partes[0];
             $user -> password = $alu->alu_vcpassword;
             $user -> authKey = $alu->alu_vccodigo.''.$alu->alu_vcpassword;
             $user -> accessToken = $alu->alu_vccodigo.''.$alu->alu_vcpassword;
