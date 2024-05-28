@@ -2,6 +2,8 @@
 
 namespace app\models;
 
+use app\models\Tablas\Alumno;
+
 /**
  * This is the ActiveQuery class for [[Alumno]].
  *
@@ -9,10 +11,10 @@ namespace app\models;
  */
 class AlumnoQuery extends \yii\db\ActiveQuery
 {
-    /*public function active()
+    public function active()
     {
         return $this->andWhere('[[status]]=1');
-    }*/
+    }
 
     /**
      * {@inheritdoc}

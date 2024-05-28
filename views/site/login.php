@@ -2,7 +2,7 @@
 
 /** @var yii\web\View $this */
 /** @var yii\bootstrap5\ActiveForm $form */
-/** @var app\models\Alumno $model **/
+/** @var app\models\LoginForm $model **/
 
 //** @var app\models\LoginForm $model */
 
@@ -27,8 +27,8 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]); ?>
 
-    <?= $form->field($model, 'alu_vcnombre')->textInput(['autofocus' => true])->label('Nombre del Alumno')?>
-    <?= $form->field($model, 'alu_vcpassword')->passwordInput()->label('Contraseña del Alumno')?>
+    <?= $form->field($model, 'username')->textInput(['autofocus' => true])->label('Correo del Alumno')?>
+    <?= $form->field($model, 'password')->passwordInput()->label('Contraseña del Alumno')?>
     <?= $form->field($model, 'rememberMe')->checkbox([
         'template' => "<div class=\"offset-lg-1 col-lg-3 custom-control custom-checkbox\">{input} {label}</div>\n<div class=\"col-lg-8\">{error}</div>",
     ]) ?>

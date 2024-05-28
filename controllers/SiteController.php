@@ -77,10 +77,14 @@ class SiteController extends Controller
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
+            if($model->login()) {
+                return $this->goBack();
+            } else {
+                $model->addError('username', 'No se pudo cargar el usuario');
+            }
         }
 
-        $model->alu_vcpassword = '';
+        $model->password = '';
         return $this->render('login', [
             'model' => $model,
         ]);

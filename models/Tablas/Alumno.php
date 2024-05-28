@@ -1,7 +1,13 @@
 <?php
 
-namespace app\models;
+namespace app\models\Tablas;
 
+use app\models\AlumnoQuery;
+use app\models\Escuela;
+use app\models\EscuelaQuery;
+use app\models\ProyectoAlumno;
+use app\models\ProyectoAlumnoQuery;
+use app\models\User;
 use Yii;
 
 /**
@@ -22,21 +28,6 @@ use Yii;
  */
 class Alumno extends \yii\db\ActiveRecord
 {
-    public $alu_vcnombre;
-    public $alu_vcpassword;
-
-    private static $alumnos = [
-        '100' => [
-            'id' => '100',
-            'alu_vcnombre' => 'admin',
-            'alu_vcpassword' => 'admin',
-        ],
-        '101' => [
-            'id' => '101',
-            'alu_vcnombre' => 'demo',
-            'alu_vcpassword' => 'demo',
-        ],
-    ];
 
     /**
      * {@inheritdoc}
@@ -44,16 +35,6 @@ class Alumno extends \yii\db\ActiveRecord
     public static function tableName()
     {
         return 'alumno';
-    }
-
-    public static function findByUsername($alu_vcnombre)
-    {
-        foreach (self::$alumnos as $alumno) {
-            if (strcasecmp($alumno['alu_vcnombre'], $alu_vcnombre) === 0) {
-                return new static($alumno);
-            }
-        }
-        return null;
     }
 
     /**
@@ -105,41 +86,4 @@ class Alumno extends \yii\db\ActiveRecord
     {
         return $this->hasMany(ProyectoAlumno::class, ['id_alumno' => 'id']);
     }
-
-    /**
-     * {@inheritdoc}
-     * @return AlumnoQuery the active query used by this AR class.
-     */
-
-    public function login()
-    {
-        if ($this->validate()) {
-            return Yii::$app->user->login($this->getAlumno(), 3600);
-        }
-        return false;
-    }
-
-    /**
-     * Finds user by [[username]]
-     *
-     * @return User|null
-     */
-    public function getAlumno()
-    {
-        if ($this->_user === false) {
-            $this->_user = User::findByUsername($this->username);
-        }
-
-        return $this->_user;
-    }
-
-
-    public static function find()
-    {
-        return new AlumnoQuery(get_called_class());
-    }
-    /*
-        public function login(){
-            if($this->validate()){}
-        }*/
 }

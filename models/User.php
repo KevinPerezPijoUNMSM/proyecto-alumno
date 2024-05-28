@@ -2,6 +2,8 @@
 
 namespace app\models;
 
+use app\models\Tablas\Alumno;
+
 class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
 {
     public $id;
@@ -33,7 +35,19 @@ class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
      */
     public static function findIdentity($id)
     {
-        return isset(self::$users[$id]) ? new static(self::$users[$id]) : null;
+        $alu = Alumno::findOne(['alu_vccodigo'=>$id]);
+        if(!is_null($alu)){
+            $user = new User();
+            $user -> id = strtoupper($alu->alu_vccodigo);
+            $user -> password = $alu->alu_vcpassword;
+            $user -> authKey = $alu->alu_vccodigo.''.$alu->alu_vcpassword;
+            $user -> accessToken = $alu->alu_vccodigo.''.$alu->alu_vcpassword;
+            return $user;
+        } else{
+            return false;
+        }
+
+        //return isset(self::$users[$id]) ? new static(self::$users[$id]) : null;
     }
 
     /**
@@ -58,13 +72,17 @@ class User extends \yii\base\BaseObject implements \yii\web\IdentityInterface
      */
     public static function findByUsername($username)
     {
-        foreach (self::$users as $user) {
-            if (strcasecmp($user['username'], $username) === 0) {
-                return new static($user);
-            }
+        $alu = Alumno::find() -> where(['alu_vccorreo'=>$username])->one();
+        if(!is_null($alu)){
+            $user = new User();
+            $user -> id = strtoupper($alu->alu_vccodigo);
+            $user -> password = $alu->alu_vcpassword;
+            $user -> authKey = $alu->alu_vccodigo.''.$alu->alu_vcpassword;
+            $user -> accessToken = $alu->alu_vccodigo.''.$alu->alu_vcpassword;
+            return $user;
+        } else{
+            return false;
         }
-
-        return null;
     }
 
     /**
